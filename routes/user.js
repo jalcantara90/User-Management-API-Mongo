@@ -10,6 +10,7 @@ const multipart = require('connect-multiparty'); // librería que sirve enviar f
 const md_upload = multipart({ uploadDir: './uploads/users' })
 
 api.get('/users', UserController.getUsers );
+api.get('/get-friends/:id',md_auth.ensureAuth, UserController.getFriends);
 api.post('/user', UserController.saveUser );
 api.post('/login', UserController.loginUser)
 api.put('/user/:id', md_auth.ensureAuth, UserController.updateUser );

@@ -198,6 +198,30 @@ const removeFriend = (req, res) => {
     );
 }
 
+const getFriends = (req, res) => {
+
+    let userId = req.params.id;
+
+    User.findOne({ _id: userId }).populate({ 
+            path: 'friends',
+            model: 'User',
+            populate: {
+                path: 'friends',
+                model: 'User',
+            }
+        }).exec( (err, friends) => {
+        if( err ) {
+            res.status(500).send({ message: 'Error en la petición'});
+        }else {
+            if ( !friends ){
+                res.status(404).send('No se han podido mostrar las canciones');
+            }else {
+                res.status(200).send({ friends })
+            }
+        }
+    })
+}
+
 
 
 module.exports = {
@@ -207,6 +231,7 @@ module.exports = {
     loginUser,
     deleteUser,
     addFriend,
-    removeFriend
+    removeFriend,
+    getFriends
 }
 
