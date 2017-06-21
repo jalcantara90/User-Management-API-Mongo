@@ -7,8 +7,10 @@ const app = express();
 
 // Routes load
 
+const user_routes = require('./routes/user');
 
-
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 // Configure Headers
 
@@ -23,5 +25,7 @@ app.use(( (req, res, next)=> {
 
 
 // base routes
+
+app.use('/api', user_routes);
 
 module.exports = app;
