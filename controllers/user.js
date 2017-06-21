@@ -154,11 +154,59 @@ const deleteUser = (req, res) => {
     }
 }
 
+const addFriend = (req, res) => {
+
+    let userId = req.params.id;
+    let params = req.body;
+    let friend = params.friend;
+
+    User.findByIdAndUpdate( userId,{$push:{friends: friend}} ,
+        {safe: true, upsert: true, new : true},
+        (err, friendsUpdated) => {
+            if(err) {
+                res.status(500).send({message: 'Request Error'});
+            }else {
+                if( !friendsUpdated ) {
+                    res.status(404).send({ message: 'User not found'});
+                }else {
+                    res.status(200).send({ user: friendsUpdated });
+                }
+            }   
+        }
+    );
+}
+
+const removeFriend = (req, res) => {
+
+    let userId = req.params.id;
+    let params = req.body;
+    let friend = params.friend;
+
+    User.findByIdAndUpdate( userId,{$pull:{friends: friend}} ,
+        {safe: true, upsert: true, new : true},
+        (err, friendsRemoved) => {
+            if(err) {
+                res.status(500).send({message: 'Request Error'});
+            }else {
+                if( !friendsRemoved ) {
+                    res.status(404).send({ message: 'User not found'});
+                }else {
+                    res.status(200).send({ user: friendsRemoved });
+                }
+            }   
+        }
+    );
+}
+
+
+
 module.exports = {
     getUsers,
     saveUser,
     updateUser,
     loginUser,
-    deleteUser
+    deleteUser,
+    addFriend,
+    removeFriend
 }
 
