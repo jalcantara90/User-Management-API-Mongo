@@ -100,12 +100,33 @@ const updateUser = (req, res) => {
             }
         }
     })  
+}
 
+const deleteUser = (req, res) => {
+
+    let userId = req.params.id;
+
+    if( !userId ) {
+        res.status(500).send({message: 'The request needs an user id to delete register'})
+    }else {
+        User.findByIdAndRemove( userId , (err, userDeleted) => {
+            if ( err ) {
+                res.status(500).send({ message: 'Request Error'})
+            }else {
+                if(!userDeleted) {
+                    res.status(404).send({ message: 'User not found'});
+                }else {
+                    res.status(200).send({ user: userDeleted})
+                }
+            }
+        });
+    }
 }
 
 module.exports = {
     pruebas,
     saveUser,
     updateUser,
-    loginUser
+    loginUser,
+    deleteUser
 }
