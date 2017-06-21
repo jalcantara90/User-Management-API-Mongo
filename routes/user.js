@@ -11,5 +11,7 @@ const md_upload = multipart({ uploadDir: './uploads/users' })
 
 api.get('/prueba', UserController.pruebas );
 api.post('/user', UserController.saveUser );
+api.post('/login', UserController.loginUser)
+api.put('/user/:id', md_auth.ensureAuth, UserController.updateUser );
 
 module.exports = api;
