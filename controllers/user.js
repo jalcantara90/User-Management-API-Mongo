@@ -6,11 +6,42 @@ const path = require('path'); // requerimos path para poder trabajr con las ruta
 const bcrypt = require('bcrypt-nodejs');
 const User = require('../models/user');
 const jwt = require('../services/jwt');
+const mongoosePaginate = require('mongoose-pagination');
 
-function pruebas (req, res) {
-    res.status(200).send({ 
-        message: 'Probando el controlador de usuario'
-    });
+const getUsers = (req, res) => {
+
+    let page;
+    let pages;
+    let itemsPerPage = 50;
+    
+    if (req.params.page) {
+        page = req.params.page;
+    }else {
+        page = 1;
+    }
+
+    User.find().sort('name').paginate( page, itemsPerPage, (err, users , totals) => {
+        if (err) {
+            res.status(500).send({ message: 'Request Error' });
+        }else {
+            if (!users) {
+                res.status(404).send({ message: 'Users not found'});
+            }else {
+                pages = totals/ itemsPerPage;
+
+                if (pages < 1) {
+                    pages = 1;
+                } 
+
+                res.status(200).send({
+                    total_items: totals,
+                    total_pages: pages,
+                    users
+                })
+            }
+        }
+    })
+
 }
 
 const saveUser = (req, res) => {
@@ -124,9 +155,10 @@ const deleteUser = (req, res) => {
 }
 
 module.exports = {
-    pruebas,
+    getUsers,
     saveUser,
     updateUser,
     loginUser,
     deleteUser
 }
+
