@@ -211,10 +211,10 @@ const getFriends = (req, res) => {
             }
         }).exec( (err, friends) => {
         if( err ) {
-            res.status(500).send({ message: 'Error en la petición'});
+            res.status(500).send({ message: 'Request Error'});
         }else {
             if ( !friends ){
-                res.status(404).send('No se han podido mostrar las canciones');
+                res.status(404).send('Not found User');
             }else {
                 res.status(200).send({ friends })
             }
@@ -222,6 +222,68 @@ const getFriends = (req, res) => {
     })
 }
 
+const uploadImage = (req, res) => {
+
+    let imageAtributte;
+
+   
+
+    let userId = req.params.id;
+    let file_name = 'Not Upload';
+
+    if(req.files) {
+        let file_path = req.files.image.path;
+
+        let file_split = file_path.split('/');
+        let file_name = file_split[2];
+
+        let ext_split = file_name.split('\.');
+        let file_ext = ext_split[1];
+
+        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif') {
+             if (req.params.background) {
+
+                User.findByIdAndUpdate( userId, { backgroundImage: file_name } , (err, userUpdated) => {
+
+                    if (!userUpdated) {
+                        res.status(404).send({ message: 'User not updated'});
+                    }else {
+                        res.status(200).send({ image: file_name, user: userUpdated });
+                    }
+                })
+            }else {
+                User.findByIdAndUpdate( userId, { avatarImage: file_name } , (err, userUpdated) => {
+
+                    if (!userUpdated) {
+                        res.status(404).send({ message: 'User not updated'});
+                    }else {
+                        res.status(200).send({ image: file_name, user: userUpdated });
+                    }
+                })
+            }
+            
+
+        }else {
+            res.status(200).send({ message: 'Wrong extension file'});
+        }
+
+    }else{
+        res.status(200).send({ message: 'The image does not upload'});
+    }
+}
+
+const getImageFile = (req, res) =>{
+    let imageFile = req.params.imageFile;
+    let path_file = './uploads/users/' + imageFile;
+
+    fs.exists( path_file, (exists)=>{
+        if (exists) {
+            res.sendFile(path.resolve( path_file ))
+        }else {
+            res.status(200).send({ message: 'The image does not exist'});
+        }
+    })
+}
 
 
 module.exports = {
@@ -232,6 +294,8 @@ module.exports = {
     deleteUser,
     addFriend,
     removeFriend,
-    getFriends
+    getFriends,
+    uploadImage,
+    getImageFile
 }
 
