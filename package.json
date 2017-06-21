@@ -1,0 +1,40 @@
+{
+  "name": "user-management",
+  "version": "0.0.1",
+  "description": "An API that provides you an endpoints to manage users of your app's",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jalcantara90/user-management.git"
+  },
+  "keywords": [
+    "api",
+    "user-management",
+    "user",
+    "management",
+    "login"
+  ],
+  "author": "Jonathan Alcántara Jiménez <jalcantara1990@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jalcantara90/user-management/issues"
+  },
+  "homepage": "https://github.com/jalcantara90/user-management#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "connect-multiparty": "^2.0.0",
+    "express": "^4.15.3",
+    "jwt-simple": "^0.5.1",
+    "moment": "^2.18.1",
+    "mongoose": "^4.10.6",
+    "mongoose-pagination": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
