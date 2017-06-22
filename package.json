@@ -1,7 +1,7 @@
 {
   "name": "user-management",
-  "version": "0.0.1",
-  "description": "An API that provides you an endpoints to manage users of your app's",
+  "version": "0.8.1",
+  "description": "Fast API creation to generate an user management on mongodb",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

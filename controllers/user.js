@@ -50,9 +50,7 @@ const saveUser = (req, res) => {
     let params = req.body; // recogemos todas las variables que nos lleguen por post
 
     user.name = params.name;
-    user.surname = params.surname;
     user.nickname = params.nickname;
-    user.surname = params.surname;
     user.email = params.email;
     user.role = 'role_user';
 
